@@ -1,4 +1,24 @@
+'use client'
+
+//cd AppleWeb
+//cd my-app
+
+import { useState } from "react";
+import { slides } from "./common/slides";
+
+
 export default function Home() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? slides.length - 1 : prevIndex - 1
+    );
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
+  };
   return (
     <div className="bg-white">
       {/* iPhone 14 Section */}
@@ -128,6 +148,41 @@ export default function Home() {
             </button>
           </div>
         </div>
+      </div>
+      {/* Slider */}
+      <div className="relative flex justify-center h-screen overflow-hidden">
+        <div
+          className="flex transition-transform duration-700 ease-in-out"
+          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+        >
+          {slides.map((slide, index) => (
+            <div
+              key={index}
+              className="min-w-full flex-shrink-0"
+              style={{ backgroundImage: `url(${slide})` }}
+            >
+              <img
+                src={slide}
+                alt={`Slide ${index}`}
+                className="object-cover w-full h-full"
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Кнопки */}
+        <button
+          onClick={prevSlide}
+          className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black text-white p-2 rounded-full"
+        >
+          &#8592;
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black text-white p-2 rounded-full"
+        >
+          &#8594;
+        </button>
       </div>
     </div>
   )
